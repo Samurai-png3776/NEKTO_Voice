@@ -1,12 +1,11 @@
 ﻿services:
-  # 1. Django Сайт
   - type: web
     name: nekto-voice-web
     env: python
     region: frankfurt
     plan: free
     buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate"
-    startCommand: "gunicorn nekto_config.wsgi:application"
+    startCommand: "honcho start -f Procfile.dev"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -19,27 +18,6 @@
       - key: TEAM_INVITE_CODE
         value: nekto2026
 
-  # 2. Telegram от
-  - type: worker
-    name: nekto-voice-bot
-    env: python
-    region: frankfurt
-    plan: free
-    buildCommand: "pip install -r requirements.txt"
-    startCommand: "python bot.py"
-    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: nekto-db
-          property: connectionString
-      - key: BOT_TOKEN
-        sync: false
-      - key: ADMIN_CHAT_ID
-        sync: false
-      - key: TEAM_INVITE_CODE
-        value: nekto2026
-
-# 3. аза данных PostgreSQL
 databases:
   - name: nekto-db
     region: frankfurt
