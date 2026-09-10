@@ -1,0 +1,259 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEKTO Voice — Озвучка Аниме</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red-main: #dc2626;
+            --red-dark: #991b1b;
+            --red-glow: rgba(220, 38, 38, 0.4);
+            --bg-dark: #0a0a0d;
+            --card-bg: #141419;
+            --border-color: #262630;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #f3f4f6;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+        }
+
+        .font-cyber { font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+
+        .navbar {
+            background: rgba(15, 15, 20, 0.95);
+            border-bottom: 2px solid var(--red-main);
+        }
+
+        .btn-red {
+            background: linear-gradient(135deg, var(--red-main), var(--red-dark));
+            color: #fff;
+            border: none;
+            font-weight: bold;
+            box-shadow: 0 4px 12px var(--red-glow);
+        }
+        .btn-red:hover { color: #fff; opacity: 0.9; }
+
+        .btn-outline-red {
+            border: 1px solid var(--red-main);
+            color: #fff;
+        }
+        .btn-outline-red:hover { background: var(--red-main); color: #fff; }
+
+        /* Главный баннер */
+        .hero-banner {
+            background: rgba(20, 20, 25, 0.9);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-art-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.6));
+        }
+
+        .poster-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .poster-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--red-main);
+            box-shadow: 0 8px 20px var(--red-glow);
+            color: inherit;
+        }
+
+        .poster-img {
+            width: 100%;
+            height: 360px;
+            object-fit: cover;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            border: 2px solid var(--red-main);
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- НАВИГАЦИЯ -->
+    <nav class="navbar navbar-expand-lg sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand font-cyber fs-3 text-white" href="/">🎙 NEKTO VOICE</a>
+            
+            <div class="d-flex flex-wrap gap-2 align-items-center">
+                <a href="https://t.me/Nekto_voic" target="_blank" class="btn btn-outline-red btn-sm rounded-pill">📢 Канал</a>
+                <a href="https://t.me/nekto_voice_team_bot" target="_blank" class="btn btn-outline-red btn-sm rounded-pill">🤖 Telegram Бот</a>
+                <button class="btn btn-red btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#joinModal">⚔ Набор в команду</button>
+                <a href="{% url 'team_dashboard' %}" class="btn btn-secondary btn-sm rounded-pill ms-2">Кабинет</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        
+        <!-- ГЛАВНЫЙ БАННЕР -->
+        <div class="hero-banner">
+            <div class="row align-items-center">
+                <div class="col-lg-7 mb-4 mb-lg-0">
+                    <h1 class="fw-bold font-cyber text-white display-5 mb-3">ОЗВУЧКА <span class="text-danger">С ДУШОЙ</span></h1>
+                    <p class="fs-5 text-light mb-4">Смотрите любимые релизы в качественной озвучке. Подписывайтесь на наш ТГК!</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="https://t.me/nekto_voice_team_bot" target="_blank" class="btn btn-red px-4 py-2 font-cyber">💬 Написать сообщение</a>
+                        <a href="https://t.me/nekto_voice_team_bot?start=apply" target="_blank" class="btn btn-outline-red px-4 py-2 font-cyber">⚔ Подать заявку на вступление</a>
+                    </div>
+                </div>
+                
+                <!-- АРТ С МЕЧОМ КАТАНА И НАЗВАНИЕМ КОМАНДЫ -->
+                <div class="col-lg-5 hero-art-container">
+                    <svg width="320" height="320" viewBox="0 0 350 350" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bladeGlow" x1="0%" y1="100%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#ffffff" />
+                                <stop offset="50%" stop-color="#ff4d4d" />
+                                <stop offset="100%" stop-color="#dc2626" />
+                            </linearGradient>
+                            <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+                                <stop offset="70%" stop-color="#dc2626" stop-opacity="0.9" />
+                                <stop offset="100%" stop-color="#991b1b" stop-opacity="0.2" />
+                            </radialGradient>
+                            <filter id="glowEffect" x="-20%" y="-20%" width="140%" height="140%">
+                                <feGaussianBlur stdDeviation="6" result="blur" />
+                                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                            </filter>
+                        </defs>
+
+                        <!-- Красный диск солнца -->
+                        <circle cx="175" cy="175" r="130" fill="url(#sunGlow)"/>
+                        <circle cx="175" cy="175" r="145" stroke="#dc2626" stroke-width="2" stroke-dasharray="8 6" opacity="0.6"/>
+
+                        <!-- Иероглиф -->
+                        <text x="175" y="100" text-anchor="middle" fill="#ffffff" font-size="36" font-family="sans-serif" opacity="0.25" font-weight="bold">侍</text>
+
+                        <!-- Катана по диагонали -->
+                        <path d="M40 310 L300 50" stroke="#dc2626" stroke-width="12" opacity="0.5" filter="url(#glowEffect)" stroke-linecap="round"/>
+                        <path d="M70 280 L295 55" stroke="url(#bladeGlow)" stroke-width="5" stroke-linecap="round"/>
+                        <path d="M72 278 L293 57" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round"/>
+
+                        <!-- Гарда -->
+                        <ellipse cx="85" cy="265" rx="8" ry="18" transform="rotate(-45 85 265)" fill="#141419" stroke="#dc2626" stroke-width="2"/>
+
+                        <!-- Рукоять -->
+                        <path d="M40 310 L75 275" stroke="#0a0a0d" stroke-width="10" stroke-linecap="round"/>
+                        <path d="M42 308 L73 277" stroke="#dc2626" stroke-width="3" stroke-dasharray="4 4"/>
+
+                        <!-- Название команды -->
+                        <rect x="50" y="155" width="250" height="42" rx="8" fill="#0a0a0d" opacity="0.85" stroke="#dc2626" stroke-width="1.5"/>
+                        <text x="175" y="183" text-anchor="middle" fill="#ffffff" font-size="22" font-family="'Orbitron', sans-serif" font-weight="900" letter-spacing="3" filter="url(#glowEffect)">NEKTO VOICE</text>
+                        <text x="175" y="183" text-anchor="middle" fill="#ffffff" font-size="22" font-family="'Orbitron', sans-serif" font-weight="900" letter-spacing="3">NEKTO VOICE</text>
+
+                        <!-- Искры -->
+                        <circle cx="100" cy="120" r="3" fill="#ffffff" opacity="0.9"/>
+                        <circle cx="260" cy="110" r="4" fill="#dc2626"/>
+                        <circle cx="280" cy="220" r="3" fill="#dc2626"/>
+                        <circle cx="80" cy="230" r="4" fill="#ffffff" opacity="0.8"/>
+                        <circle cx="220" cy="280" r="3.5" fill="#dc2626"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- СПИСОК РЕЛИЗОВ -->
+        <h3 class="fw-bold font-cyber mb-4 border-start border-4 border-danger ps-3">🎬 АКТУАЛЬНЫЕ РЕЛИЗЫ</h3>
+
+        <div class="row g-4">
+            {% for title in titles %}
+            <div class="col-md-6 col-lg-4 col-xl-3">
+                <a href="{% url 'public_title_detail' title.id %}" class="poster-card h-100">
+                    {% if title.poster %}
+                        <img src="{{ title.poster.url }}" class="poster-img" alt="{{ title.name }}">
+                    {% else %}
+                        <div class="poster-img d-flex align-items-center justify-content-center bg-dark text-muted fs-1">🎙</div>
+                    {% endif %}
+                    <div class="p-3">
+                        <h5 class="fw-bold font-cyber text-white mb-2">{{ title.name }}</h5>
+                        <div class="text-secondary small mb-3">
+                            {{ title.description|linebreaks|truncatewords:12 }}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="badge bg-danger">Серий: {{ title.episodes.count }}</span>
+                            <span class="text-danger small fw-bold">Смотреть ➔</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <p class="text-secondary fs-5 font-cyber">Релизы временно отсутствуют...</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНОЕ ОКНО "НАБОР В КОМАНДУ" -->
+    <div class="modal fade" id="joinModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+      <div class="modal-header">
+        <h2>⚔️ НАБОР В КОМАНДУ NEKTO VOICE</h2>
+        <button class="close-btn">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <p style="color: #ccc; margin-bottom: 15px; font-size: 14px;">
+          Мы повышаем планку качества наших релизов и ищем опытных специалистов! Ознакомься с критериями перед подачей заявки:
+        </p>
+        
+        <ul style="text-align: left; font-size: 13px; line-height: 1.5; color: #ddd; list-style: none; padding: 0;">
+          <li style="margin-bottom: 12px;">
+            <strong>🎙️ Дабберы (Парни и Девушки):</strong> Опыт от 1–2 лет, микрофон + звуковая карта, помещение с мин. эха, актерская подача и липсинк.<br>
+            <span style="color: #ff4d4d; font-size: 12px;">⚠️ Заявки без демо-записей голоса автоматически отклоняются!</span>
+          </li>
+
+          <li style="margin-bottom: 12px;">
+            <strong>🎛️ Звукорежиссеры / Таймеры:</strong> Опыт от 1–2 лет, обязателен REAPER, умение делать полный дубляж и рекасты.<br>
+            <span style="color: #ff4d4d; font-size: 12px;">⚠️ Заявки без портфолио/работ автоматически отклоняются!</span>
+          </li>
+
+          <li style="margin-bottom: 12px;">
+            <strong>📝 Переводчики и Липсеры:</strong> Английский B2/C1, адаптация перевода под дубляж и закадр.
+          </li>
+
+          <li style="margin-bottom: 12px;">
+            <strong>💬 Сабберы:</strong> Высокий уровень Aegisub, верстка стилей и титров.
+          </li>
+        </ul>
+      </div>
+
+      <div class="modal-footer" style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+        <a href="https://t.me/NEKTO_Voice_Bot" target="_blank" style="text-decoration: none; text-align: center; background: #b31217; color: #fff; padding: 10px; border-radius: 6px; font-weight: bold;">⚔️ Подать заявку через Telegram</a>
+      </div>
+    </div>
+</div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

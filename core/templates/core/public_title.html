@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title.name }} — NEKTO Voice</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --red-main: #dc2626;
+            --red-glow: rgba(220, 38, 38, 0.4);
+            --bg-dark: #0a0a0d;
+            --card-bg: #141419;
+            --border-color: #262630;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #f3f4f6;
+            font-family: 'Roboto', sans-serif;
+            min-height: 100vh;
+        }
+
+        .font-cyber { font-family: 'Orbitron', sans-serif; letter-spacing: 1px; }
+
+        .navbar {
+            background: rgba(15, 15, 20, 0.95);
+            border-bottom: 2px solid var(--red-main);
+        }
+
+        .btn-outline-red {
+            border: 1px solid var(--red-main);
+            color: #fff;
+        }
+
+        .player-container {
+            background: #000;
+            border: 2px solid var(--red-main);
+            border-radius: 12px;
+            box-shadow: 0 0 20px var(--red-glow);
+            overflow: hidden;
+        }
+
+        video { width: 100%; max-height: 550px; outline: none; display: block; }
+
+        .episode-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: #fff;
+        }
+
+        .episode-btn:hover, .episode-btn.active {
+            border-color: var(--red-main);
+            background: var(--red-main);
+            color: #fff;
+        }
+
+        .poster-preview {
+            max-height: 320px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg py-3 mb-4">
+        <div class="container">
+            <a class="navbar-brand font-cyber fs-3 text-white" href="/">🎙 NEKTO VOICE</a>
+            <div class="d-flex gap-2">
+                <a href="https://t.me/nekto_voice_team_bot" target="_blank" class="btn btn-outline-red btn-sm rounded-pill">🤖 Бот</a>
+                <a href="/" class="btn btn-outline-light btn-sm rounded-pill">⬅ На главную</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-4">
+        <div class="row align-items-center mb-4">
+            {% if title.poster %}
+            <div class="col-md-3 mb-3 mb-md-0">
+                <img src="{{ title.poster.url }}" class="img-fluid poster-preview w-100" alt="{{ title.name }}">
+            </div>
+            {% endif %}
+            <div class="col">
+                <h1 class="fw-bold font-cyber text-white mb-3">{{ title.name }}</h1>
+                <div class="text-light fs-6 mb-0">
+                    {{ title.description|linebreaks }}
+                </div>
+            </div>
+        </div>
+
+        <!-- ПЛЕЕР -->
+        <div class="player-container mb-4">
+            <video id="samurai-player" controls poster="{% if title.poster %}{{ title.poster.url }}{% endif %}">
+                <source id="video-source" src="" type="video/mp4">
+                Ваш браузер не поддерживает видеоплеер.
+            </video>
+        </div>
+
+        <h4 class="fw-bold font-cyber mb-3 border-start border-4 border-danger ps-3">🎬 ВЫБОР СЕРИИ:</h4>
+        <div class="d-flex flex-wrap gap-2 mb-5">
+            {% for episode in episodes %}
+                {% if episode.video_file %}
+                    <button class="btn episode-btn rounded-3 px-3 py-2 font-cyber" 
+                            onclick="changeEpisode('{{ episode.video_file.url }}', this)">
+                        ▶ Серия {{ episode.number }}
+                    </button>
+                {% else %}
+                    <button class="btn episode-btn rounded-3 px-3 py-2 text-muted" disabled>
+                        ⏳ Серия {{ episode.number }} (В работе)
+                    </button>
+                {% endif %}
+            {% empty %}
+                <p class="text-secondary">Серии пока не добавлены.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function changeEpisode(videoUrl, btn) {
+            let player = document.getElementById('samurai-player');
+            let source = document.getElementById('video-source');
+            
+            source.src = videoUrl;
+            player.load();
+            player.play();
+
+            document.querySelectorAll('.episode-btn').forEach(b => b.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let firstReadyBtn = document.querySelector('.episode-btn:not([disabled])');
+            if (firstReadyBtn) {
+                firstReadyBtn.click();
+            }
+        });
+    </script>
+
+</body>
+</html>

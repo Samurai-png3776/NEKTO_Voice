@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель Команды — NEKTO Voice 侍</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;800&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-red: #ff0055;
+            --neon-glow: rgba(255, 0, 85, 0.4);
+            --bg-dark: #090a0f;
+            --card-bg: #12141d;
+            --border-color: #2a2e3d;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: #e2e8f0;
+            font-family: 'Noto Sans JP', sans-serif;
+            background-image: radial-gradient(circle at 10% 20%, rgba(255,0,85,0.08) 0%, transparent 40%);
+            min-height: 100vh;
+        }
+
+        .font-cyber { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; }
+
+        .navbar {
+            background: rgba(18, 20, 29, 0.9);
+            border-bottom: 1px solid var(--neon-red);
+            box-shadow: 0 0 15px var(--neon-glow);
+        }
+
+        .card-team {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--neon-red);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .episode-badge {
+            background: #1a1d29;
+            border: 1px solid #33394b;
+        }
+
+        .btn-samurai {
+            background: linear-gradient(135deg, #ff0055, #990033);
+            color: #fff;
+            border: none;
+            box-shadow: 0 0 10px var(--neon-glow);
+        }
+        .btn-samurai:hover { color: #fff; box-shadow: 0 0 20px var(--neon-glow); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg py-3">
+        <div class="container">
+            <a class="navbar-brand font-cyber fs-3 text-white" href="#">🎙 NEKTO VOICE <span class="badge bg-danger fs-6">TEAM HQ</span></a>
+            <div class="d-flex gap-2 align-items-center">
+                <span class="text-secondary me-2">Воин: <b class="text-white font-cyber">{{ user.username }}</b></span>
+                <a href="/admin/" target="_blank" class="btn btn-outline-danger btn-sm rounded-pill">⚙ Админка</a>
+                <a href="/" class="btn btn-samurai btn-sm rounded-pill">🌐 На сайт</a>
+                <form action="{% url 'logout' %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light btn-sm rounded-pill">Выход</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <h2 class="fw-bold font-cyber mb-4 border-start border-4 border-danger ps-3">⚔ РАБОЧИЕ ТАЙТЛЫ КОМАНДЫ <span class="fs-6 text-secondary">(任務)</span></h2>
+
+        <div class="row g-4">
+            {% for title in titles %}
+            <div class="col-md-6">
+                <div class="card card-team p-4">
+                    <h4 class="fw-bold font-cyber text-white mb-2">{{ title.name }}</h4>
+                    <p class="text-secondary small mb-3">{{ title.description|default:"Нет описания" }}</p>
+                    
+                    <h6 class="fw-bold font-cyber text-danger mt-3 mb-3">СТАТУС ГОТОВНОСТИ СЕРИЙ:</h6>
+                    <div class="d-flex flex-column gap-2">
+                        {% for episode in title.episodes.all %}
+                        <div class="episode-badge p-2 rounded-3 d-flex justify-content-between align-items-center">
+                            <span class="font-cyber small">ЭПИЗОД {{ episode.number }}</span>
+                            {% if episode.is_ready %}
+                                <span class="badge bg-success">✅ ОЗВУЧЕНО И СВЕДЕНО</span>
+                            {% elif episode.is_translated %}
+                                <span class="badge bg-warning text-dark">🎙 НА ЗАПИСИ (АКТЕРЫ)</span>
+                            {% else %}
+                                <span class="badge bg-secondary">⏳ ПЕРЕВОД / ТЕХ.РАБОТЫ</span>
+                            {% endif %}
+                        </div>
+                        {% empty %}
+                        <small class="text-muted">Эпизоды еще не распределены</small>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</body>
+</html>
