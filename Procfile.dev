@@ -1,2 +1,2 @@
-﻿web: gunicorn nekto_config.wsgi:application
+﻿web: gunicorn core.wsgi:application --bind 0.0.0.0:$PORT
 bot: python bot.py
